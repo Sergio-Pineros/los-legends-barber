@@ -1,11 +1,10 @@
-import { db } from "@/db";
-import { cartItems, productVariants, products } from "@/db/schema";
-import { and, asc, eq } from "drizzle-orm";
 import { cookies } from "next/headers";
-import { randomUUID } from "crypto";
+import { getVariant } from "./catalog";
 import { SHOPIFY_STORE_URL } from "./catalog-data";
 
 export const CART_COOKIE = "legends_cart";
+
+type StoredLine = { variantId: number; quantity: number };
 
 export type CartLine = {
   id: number;
@@ -27,78 +26,86 @@ export type CartPayload = {
   checkoutUrl: string | null;
 };
 
-export async function getCartId(create = false): Promise<string | null> {
+function parseLines(raw: string | undefined): StoredLine[] {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw) as StoredLine[];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((line) => Number.isInteger(line.variantId) && Number.isInteger(line.quantity));
+  } catch {
+    return [];
+  }
+}
+
+async function readLines(): Promise<StoredLine[]> {
   const store = await cookies();
-  const existing = store.get(CART_COOKIE)?.value;
-  if (existing) return existing;
-  if (!create) return null;
-  const id = randomUUID();
-  store.set(CART_COOKIE, id, {
+  return parseLines(store.get(CART_COOKIE)?.value);
+}
+
+async function writeLines(lines: StoredLine[]) {
+  const store = await cookies();
+  store.set(CART_COOKIE, JSON.stringify(lines), {
     httpOnly: true,
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 90,
   });
-  return id;
 }
 
-export async function getCart(cartId: string | null): Promise<CartPayload> {
-  if (!cartId) return { items: [], count: 0, subtotal: 0, checkoutUrl: null };
-  const rows = await db
-    .select({
-      id: cartItems.id,
-      quantity: cartItems.quantity,
-      variantId: productVariants.id,
-      shopifyVariantId: productVariants.shopifyVariantId,
-      color: productVariants.color,
-      size: productVariants.size,
-      price: productVariants.price,
-      image: productVariants.imageSrc,
-      productTitle: products.title,
-      productHandle: products.handle,
-    })
-    .from(cartItems)
-    .innerJoin(productVariants, eq(cartItems.variantId, productVariants.id))
-    .innerJoin(products, eq(productVariants.productId, products.id))
-    .where(eq(cartItems.cartId, cartId))
-    .orderBy(asc(cartItems.createdAt));
-
-  const count = rows.reduce((n, r) => n + r.quantity, 0);
-  const subtotal = rows.reduce((n, r) => n + r.quantity * r.price, 0);
+function toPayload(lines: StoredLine[]): CartPayload {
+  const items: CartLine[] = [];
+  for (const line of lines) {
+    const match = getVariant(line.variantId);
+    if (!match) continue;
+    items.push({
+      id: line.variantId,
+      quantity: line.quantity,
+      variantId: line.variantId,
+      shopifyVariantId: match.variant.shopifyVariantId,
+      color: match.variant.color,
+      size: match.variant.size,
+      price: match.variant.price,
+      image: match.variant.imageSrc,
+      productTitle: match.product.title,
+      productHandle: match.product.handle,
+    });
+  }
+  const count = items.reduce((n, r) => n + r.quantity, 0);
+  const subtotal = items.reduce((n, r) => n + r.quantity * r.price, 0);
   const checkoutUrl =
-    rows.length > 0
-      ? `${SHOPIFY_STORE_URL}/cart/${rows.map((r) => `${r.shopifyVariantId}:${r.quantity}`).join(",")}`
+    items.length > 0
+      ? `${SHOPIFY_STORE_URL}/cart/${items.map((r) => `${r.shopifyVariantId}:${r.quantity}`).join(",")}`
       : null;
-  return { items: rows, count, subtotal, checkoutUrl };
+  return { items, count, subtotal, checkoutUrl };
 }
 
-export async function addToCart(cartId: string, variantId: number, quantity: number) {
-  const [existing] = await db
-    .select()
-    .from(cartItems)
-    .where(and(eq(cartItems.cartId, cartId), eq(cartItems.variantId, variantId)))
-    .limit(1);
+export async function getCart(): Promise<CartPayload> {
+  return toPayload(await readLines());
+}
+
+export async function addToCart(variantId: number, quantity: number) {
+  const lines = await readLines();
+  const existing = lines.find((line) => line.variantId === variantId);
   if (existing) {
-    await db
-      .update(cartItems)
-      .set({ quantity: Math.min(existing.quantity + quantity, 10), updatedAt: new Date() })
-      .where(eq(cartItems.id, existing.id));
+    existing.quantity = Math.min(existing.quantity + quantity, 10);
   } else {
-    await db.insert(cartItems).values({ cartId, variantId, quantity: Math.min(quantity, 10) });
+    lines.push({ variantId, quantity: Math.min(quantity, 10) });
   }
+  await writeLines(lines);
 }
 
-export async function updateCartLine(cartId: string, lineId: number, quantity: number) {
-  if (quantity <= 0) {
-    await db.delete(cartItems).where(and(eq(cartItems.id, lineId), eq(cartItems.cartId, cartId)));
-    return;
-  }
-  await db
-    .update(cartItems)
-    .set({ quantity: Math.min(quantity, 10), updatedAt: new Date() })
-    .where(and(eq(cartItems.id, lineId), eq(cartItems.cartId, cartId)));
+export async function updateCartLine(lineId: number, quantity: number) {
+  const lines = await readLines();
+  const next =
+    quantity <= 0
+      ? lines.filter((line) => line.variantId !== lineId)
+      : lines.map((line) =>
+          line.variantId === lineId ? { ...line, quantity: Math.min(quantity, 10) } : line,
+        );
+  await writeLines(next);
 }
 
-export async function removeCartLine(cartId: string, lineId: number) {
-  await db.delete(cartItems).where(and(eq(cartItems.id, lineId), eq(cartItems.cartId, cartId)));
+export async function removeCartLine(lineId: number) {
+  const lines = await readLines();
+  await writeLines(lines.filter((line) => line.variantId !== lineId));
 }

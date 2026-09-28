@@ -1,4 +1,4 @@
-import type { SizeGuide } from "@/db/schema";
+import type { SizeGuide } from "@/lib/types";
 
 const IMG = "/images/products/";
 
