@@ -1,0 +1,182 @@
+<section class="hero-section relative -mt-16 lg:-mt-[72px] pt-16 lg:pt-[72px] overflow-hidden grain" style="position: relative; overflow: hidden;">
+  <div class="page-container pt-10 sm:pt-16 lg:pt-20 pb-16 lg:pb-24" style="padding-top: 5rem; padding-bottom: 6rem;">
+    <div class="hero-grid grid lg:grid-cols-12 gap-10 lg:gap-8 items-end" style="display: grid; gap: 2.5rem; align-items: end;">
+      
+      <!-- HERO LEFT -->
+      <div class="hero-content lg:col-span-7 relative z-10" style="position: relative; z-index: 10;">
+        <p class="eyebrow text-mute animate-fade-in" style="color: var(--color-mute);">
+          {{ section.settings.eyebrow | default: "Los Angeles &middot; Est. 2022 &middot; Lifestyle Clothing" }}
+        </p>
+        
+        <h1 class="display mt-6 leading-[0.86]" style="margin-top: 1.5rem; font-size: clamp(3.75rem, 10vw, 8.5rem); line-height: 0.86;">
+          <span class="block animate-fade-up" style="display: block; animation-delay: 60ms;">{{ section.settings.heading_line_1 | default: "Made to" }}</span>
+          <span class="block animate-fade-up" style="display: block; animation-delay: 160ms;">{{ section.settings.heading_line_2 | default: "Inspire." }}</span>
+          <span
+            class="block serif-accent text-navy text-[0.62em] leading-[1] mt-2 animate-fade-up"
+            style="display: block; color: var(--color-navy); font-size: 0.62em; line-height: 1; margin-top: 0.5rem; animation-delay: 260ms;"
+          >
+            {{ section.settings.heading_accent | default: "cut different." }}
+          </span>
+        </h1>
+        
+        <p class="mt-8 max-w-md text-[15px] leading-relaxed text-ink-soft animate-fade-up" style="margin-top: 2rem; max-width: 28rem; font-size: 15px; line-height: 1.6; color: var(--color-ink-soft); animation-delay: 360ms;">
+          {{ section.settings.subheading | default: "Heavyweight essentials with a clean, minimal mark. Built for those who move with purpose — from the studio in LA to everywhere." }}
+        </p>
+        
+        <div class="mt-8 flex flex-wrap gap-3 animate-fade-up" style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem; animation-delay: 440ms;">
+          <a href="{{ section.settings.button_1_link | default: routes.all_products_collection_url }}" class="btn btn-primary">
+            {{ section.settings.button_1_text | default: "Shop the collection" }}
+          </a>
+          <a href="{{ section.settings.button_2_link | default: '/collections/hoodies' }}" class="btn btn-outline">
+            {{ section.settings.button_2_text | default: "Heavyweight Hoodie" }}
+          </a>
+        </div>
+      </div>
+
+      <!-- HERO RIGHT -->
+      <div class="hero-media lg:col-span-5 relative animate-fade-in" style="position: relative; animation-delay: 200ms;">
+        {%- assign featured_prod = section.settings.featured_product -%}
+        
+        <div class="relative rounded-[28px] overflow-hidden bg-paper border border-line shadow-[0_30px_80px_-40px_rgba(11,11,12,0.35)]" style="position: relative; border-radius: 28px; overflow: hidden; background: var(--color-paper); border: 1px solid var(--color-line); box-shadow: 0 30px 80px -40px rgba(11,11,12,0.35);">
+          <div class="relative aspect-[4/5]" style="position: relative; aspect-ratio: 4/5;">
+            {%- if featured_prod != blank and featured_prod.featured_media != blank -%}
+              {{ featured_prod.featured_media | image_url: width: 1000 | image_tag:
+                class: 'object-contain w-full h-full',
+                loading: 'eager',
+                sizes: '(min-width: 1024px) 40vw, 100vw',
+                alt: featured_prod.title | escape
+              }}
+            {%- elsif section.settings.hero_image != blank -%}
+              {{ section.settings.hero_image | image_url: width: 1000 | image_tag:
+                class: 'object-contain w-full h-full',
+                loading: 'eager',
+                alt: 'Legends Apparel'
+              }}
+            {%- else -%}
+              {{ 'hero.jpg' | asset_url | image_tag:
+                class: 'object-cover w-full h-full',
+                loading: 'eager',
+                alt: 'Legends Apparel — Made To Inspire'
+              }}
+            {%- endif -%}
+
+            <div class="hero-card-overlay absolute inset-x-0 bottom-0 p-5 sm:p-6 flex items-end justify-between" style="position: absolute; inset-inline: 0; bottom: 0; padding: 1.5rem; display: flex; align-items: flex-end; justify-content: space-between; background: linear-gradient(to top, rgba(255,255,255,0.95), rgba(255,255,255,0.7) 60%, transparent);">
+              <div>
+                <p class="eyebrow text-[10px] text-mute" style="font-size: 10px; color: var(--color-mute);">Featured</p>
+                <p class="mt-1 font-semibold tracking-tight" style="margin-top: 0.25rem; font-weight: 600;">
+                  {{ featured_prod.title | default: "Legends Heavyweight Hoodie" }}
+                </p>
+              </div>
+              {%- if featured_prod != blank -%}
+                <a href="{{ featured_prod.url }}" class="btn btn-primary h-11 px-5 text-[10px]" style="height: 44px; padding: 0 1.25rem; font-size: 10px;">
+                  {{ featured_prod.price | money }} &rarr;
+                </a>
+              {%- else -%}
+                <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary h-11 px-5 text-[10px]" style="height: 44px; padding: 0 1.25rem; font-size: 10px;">
+                  $50.00 &rarr;
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+
+        <!-- ROTATED LIFESTYLE ACCENT PHOTO -->
+        <div class="hero-tilted-card hidden lg:block absolute -left-24 bottom-10 w-52 rounded-2xl overflow-hidden border border-line bg-paper shadow-xl" style="position: absolute; left: -6rem; bottom: 2.5rem; width: 13rem; transform: rotate(-6deg); border-radius: 1rem; overflow: hidden; border: 1px solid var(--color-line); background: var(--color-paper); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+          {{ 'hero.jpg' | asset_url | image_tag: class: 'w-full h-auto', alt: 'Legends Apparel Lifestyle' }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (min-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    }
+    .hero-content {
+      grid-column: span 7 / span 7 !important;
+    }
+    .hero-media {
+      grid-column: span 5 / span 5 !important;
+    }
+    .hero-tilted-card {
+      display: block !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Los Angeles · Est. 2022 · Lifestyle Clothing"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Heading Line 1",
+      "default": "Made to"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Heading Line 2",
+      "default": "Inspire."
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Accent Subtitle",
+      "default": "cut different."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Heavyweight essentials with a clean, minimal mark. Built for those who move with purpose — from the studio in LA to everywhere."
+    },
+    {
+      "type": "text",
+      "id": "button_1_text",
+      "label": "Button 1 Text",
+      "default": "Shop the collection"
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Button 1 Link"
+    },
+    {
+      "type": "text",
+      "id": "button_2_text",
+      "label": "Button 2 Text",
+      "default": "Heavyweight Hoodie"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Button 2 Link"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Featured Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image (fallback)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}

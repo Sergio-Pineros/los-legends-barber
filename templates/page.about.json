@@ -1,0 +1,38 @@
+{
+  "sections": {
+    "about_story": {
+      "type": "about-story",
+      "settings": {}
+    },
+    "marquee": {
+      "type": "marquee",
+      "blocks": {
+        "m1": { "type": "item", "settings": { "text": "Made To Inspire" } },
+        "m2": { "type": "item", "settings": { "text": "Lifestyle Clothing" } },
+        "m3": { "type": "item", "settings": { "text": "Cut Different" } },
+        "m4": { "type": "item", "settings": { "text": "Legends Worldwide" } }
+      },
+      "block_order": ["m1", "m2", "m3", "m4"],
+      "settings": {}
+    },
+    "about_sizing": {
+      "type": "about-sizing",
+      "settings": {}
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "Start here",
+        "heading_prefix": "Featured",
+        "heading_accent": "pieces",
+        "products_to_show": 4
+      }
+    }
+  },
+  "order": [
+    "about_story",
+    "marquee",
+    "about_sizing",
+    "featured_collection"
+  ]
+}

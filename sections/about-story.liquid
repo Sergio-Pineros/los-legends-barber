@@ -1,0 +1,73 @@
+<section class="about-story-section page-container pt-12 sm:pt-20" style="padding-top: 4rem;">
+  <div class="reveal">
+    <p class="eyebrow text-mute" style="color: var(--color-mute);">About</p>
+    <h1 class="display mt-5 leading-[0.86] max-w-5xl" style="font-size: clamp(3rem, 9vw, 7.5rem); line-height: 0.86; margin-top: 1.25rem; max-width: 64rem;">
+      Lifestyle clothing, <span class="serif-accent text-navy" style="color: var(--color-navy);">cut different.</span>
+    </h1>
+  </div>
+
+  <div class="about-story-grid mt-14 grid lg:grid-cols-12 gap-10" style="margin-top: 3.5rem; display: grid; gap: 2.5rem;">
+    <!-- IMAGE -->
+    <div class="reveal about-img-col lg:col-span-7">
+      <div class="rounded-[28px] overflow-hidden bg-paper border border-line" style="border-radius: 28px; overflow: hidden; background: var(--color-paper); border: 1px solid var(--color-line);">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1400 | image_tag: class: 'w-full h-auto', loading: 'eager', alt: 'Legends Apparel' }}
+        {%- else -%}
+          {{ 'hero.jpg' | asset_url | image_tag: class: 'w-full h-auto', loading: 'eager', alt: 'Legends Apparel — Made To Inspire' }}
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- COPY & STATS -->
+    <div class="reveal about-copy-col lg:col-span-4 lg:col-start-9 flex flex-col justify-center" style="display: flex; flex-direction: column; justify-content: center; --reveal-delay: 100ms;">
+      <p class="text-lg leading-relaxed text-ink" style="font-size: 1.125rem; line-height: 1.6; color: var(--color-ink);">
+        Legends Apparel is made to inspire. Born in Los Angeles in 2022, we make lifestyle clothing with a heavyweight feel and a minimal mark &mdash; pieces that go from training days to everyday, anywhere.
+      </p>
+      <p class="mt-6 text-[15px] leading-relaxed text-ink-soft" style="margin-top: 1.5rem; font-size: 15px; line-height: 1.6; color: var(--color-ink-soft);">
+        Every piece is built for those who move with purpose. Relaxed, oversized-inspired cuts. Premium construction. A clean LEGENDS design up front and nothing that doesn&apos;t need to be there.
+      </p>
+
+      <dl class="mt-10 grid grid-cols-3 gap-6" style="margin-top: 2.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+        <div class="border-t border-ink pt-3" style="border-top: 1px solid var(--color-ink); padding-top: 0.75rem;">
+          <dt class="display text-2xl" style="font-size: 1.5rem;">2022</dt>
+          <dd class="eyebrow text-[9px] text-mute mt-1" style="font-size: 9px; color: var(--color-mute); margin-top: 0.25rem;">Established</dd>
+        </div>
+        <div class="border-t border-ink pt-3" style="border-top: 1px solid var(--color-ink); padding-top: 0.75rem;">
+          <dt class="display text-2xl" style="font-size: 1.5rem;">LA</dt>
+          <dd class="eyebrow text-[9px] text-mute mt-1" style="font-size: 9px; color: var(--color-mute); margin-top: 0.25rem;">Studio</dd>
+        </div>
+        <div class="border-t border-ink pt-3" style="border-top: 1px solid var(--color-ink); padding-top: 0.75rem;">
+          <dt class="display text-2xl" style="font-size: 1.5rem;">Worldwide</dt>
+          <dd class="eyebrow text-[9px] text-mute mt-1" style="font-size: 9px; color: var(--color-mute); margin-top: 0.25rem;">Community</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (min-width: 1024px) {
+    .about-story-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    }
+    .about-img-col {
+      grid-column: span 7 / span 7 !important;
+    }
+    .about-copy-col {
+      grid-column: 9 / span 4 !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "About Story",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "About Hero Image"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,124 @@
+<header class="site-header sticky top-0 z-[60] transition-colors duration-500" style="position: sticky; top: 0; z-index: 60; transition: background-color 0.4s, border-color 0.4s;">
+  <div class="page-container h-16 lg:h-[72px] flex items-center justify-between" style="height: var(--header-height); display: flex; align-items: center; justify-content: space-between; position: relative;">
+    
+    <!-- DESKTOP NAV -->
+    <nav class="hidden lg:flex items-center gap-8" aria-label="Primary" style="display: none;">
+      {%- assign nav_menu = linklists[section.settings.menu] -%}
+      {%- if nav_menu != blank and nav_menu.links.size > 0 -%}
+        {%- for link in nav_menu.links -%}
+          <a href="{{ link.url }}" class="eyebrow text-[11px] link-line text-ink-soft hover:text-ink transition-colors" {% if link.active %}aria-current="page"{% endif %}>
+            {{ link.title }}
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        <a href="{{ routes.all_products_collection_url }}" class="eyebrow text-[11px] link-line text-ink-soft hover:text-ink transition-colors">Shop</a>
+        <a href="/collections/hoodies" class="eyebrow text-[11px] link-line text-ink-soft hover:text-ink transition-colors">Hoodies</a>
+        <a href="/collections/tees" class="eyebrow text-[11px] link-line text-ink-soft hover:text-ink transition-colors">Tees</a>
+        <a href="/collections/bottoms" class="eyebrow text-[11px] link-line text-ink-soft hover:text-ink transition-colors">Bottoms</a>
+        <a href="/pages/about" class="eyebrow text-[11px] link-line text-ink-soft hover:text-ink transition-colors">About</a>
+      {%- endif -%}
+    </nav>
+
+    <!-- MOBILE HAMBURGER -->
+    <button
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+      class="mobile-menu-btn lg:hidden h-10 w-10 -ml-2 grid place-items-center"
+      style="display: grid; place-items: center; width: 40px; height: 40px;"
+    >
+      <span class="hamburger-icon relative block w-5 h-3" style="position: relative; display: block; width: 20px; height: 12px;">
+        <span class="bar-1" style="position: absolute; left: 0; top: 0; height: 1px; width: 20px; background: var(--color-ink); transition: transform 0.3s;"></span>
+        <span class="bar-2" style="position: absolute; left: 0; top: 5px; height: 1px; width: 20px; background: var(--color-ink); transition: opacity 0.2s;"></span>
+        <span class="bar-3" style="position: absolute; left: 0; bottom: 0; height: 1px; width: 20px; background: var(--color-ink); transition: transform 0.3s;"></span>
+      </span>
+    </button>
+
+    <!-- CENTER LOGO -->
+    <div class="header-logo-wrap" style="position: absolute; left: 50%; transform: translateX(-50%);">
+      {% render 'logo' %}
+    </div>
+
+    <!-- RIGHT ACTIONS (BAG) -->
+    <div class="flex items-center gap-2 sm:gap-6" style="display: flex; align-items: center; gap: 1rem;">
+      <button
+        type="button"
+        data-cart-open
+        class="cart-trigger group inline-flex items-center gap-2 eyebrow text-[11px] h-10 px-1"
+        aria-label="Open bag, {{ cart.item_count }} items"
+        style="display: inline-flex; align-items: center; gap: 0.5rem; height: 40px;"
+      >
+        <span class="hidden sm:inline" style="display: inline-block;">Bag</span>
+        <span
+          class="cart-count-badge grid place-items-center h-7 min-w-7 px-2 rounded-full bg-ink text-canvas text-[10px] tabular-nums transition-transform duration-300"
+          style="display: grid; place-items: center; height: 28px; min-width: 28px; padding: 0 0.5rem; border-radius: 9999px; background: var(--color-ink); color: var(--color-canvas); font-size: 10px;"
+        >
+          {{ cart.item_count }}
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE NAVIGATION PANEL -->
+<div class="mobile-nav-panel lg:hidden fixed inset-0 z-[55] bg-canvas pt-28 transition-all duration-500" style="position: fixed; inset: 0; z-index: 55; background: var(--color-canvas); padding-top: 6rem; opacity: 0; pointer-events: none; transform: translateY(-10px); transition: all 0.4s var(--ease-out-expo);">
+  <nav class="px-6 pt-8 flex flex-col" aria-label="Mobile" style="padding: 2rem 1.5rem; display: flex; flex-direction: column;">
+    {%- if nav_menu != blank and nav_menu.links.size > 0 -%}
+      {%- for link in nav_menu.links -%}
+        <a href="{{ link.url }}" class="display text-4xl py-4 border-b border-line" style="font-size: 2.25rem; padding: 1rem 0; border-bottom: 1px solid var(--color-line);">
+          {{ link.title }}
+        </a>
+      {%- endfor -%}
+    {%- else -%}
+      <a href="{{ routes.all_products_collection_url }}" class="display text-4xl py-4 border-b border-line" style="font-size: 2.25rem; padding: 1rem 0; border-bottom: 1px solid var(--color-line);">Shop</a>
+      <a href="/collections/hoodies" class="display text-4xl py-4 border-b border-line" style="font-size: 2.25rem; padding: 1rem 0; border-bottom: 1px solid var(--color-line);">Hoodies</a>
+      <a href="/collections/tees" class="display text-4xl py-4 border-b border-line" style="font-size: 2.25rem; padding: 1rem 0; border-bottom: 1px solid var(--color-line);">Tees</a>
+      <a href="/collections/bottoms" class="display text-4xl py-4 border-b border-line" style="font-size: 2.25rem; padding: 1rem 0; border-bottom: 1px solid var(--color-line);">Bottoms</a>
+      <a href="/pages/about" class="display text-4xl py-4 border-b border-line" style="font-size: 2.25rem; padding: 1rem 0; border-bottom: 1px solid var(--color-line);">About</a>
+    {%- endif -%}
+    <p class="mt-10 serif-accent text-2xl text-mute" style="margin-top: 2.5rem; font-size: 1.5rem; color: var(--color-mute);">
+      Made to inspire. Cut different.
+    </p>
+  </nav>
+</div>
+
+<style>
+  @media (min-width: 1024px) {
+    .site-header nav { display: flex !important; }
+    .site-header .mobile-menu-btn { display: none !important; }
+  }
+  .site-header.scrolled {
+    background: rgba(247, 246, 243, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .mobile-menu-btn[aria-expanded="true"] .bar-1 {
+    transform: translateY(5px) rotate(45deg);
+  }
+  .mobile-menu-btn[aria-expanded="true"] .bar-2 {
+    opacity: 0;
+  }
+  .mobile-menu-btn[aria-expanded="true"] .bar-3 {
+    transform: translateY(-5px) rotate(-45deg);
+  }
+  .mobile-nav-panel.is-open {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(0) !important;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

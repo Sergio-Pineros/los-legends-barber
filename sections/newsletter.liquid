@@ -1,0 +1,42 @@
+<section class="newsletter-section page-container pt-24 lg:pt-32" style="padding-top: 6rem;">
+  <div class="reveal rounded-[28px] border border-line bg-paper px-6 py-14 sm:px-12 sm:py-20 text-center" style="border-radius: 28px; border: 1px solid var(--color-line); background: var(--color-paper); padding: clamp(3rem, 6vw, 5rem) 1.5rem; text-align: center;">
+    <p class="eyebrow text-mute" style="color: var(--color-mute);">{{ section.settings.eyebrow | default: "Join the list" }}</p>
+    <h2 class="display text-4xl sm:text-6xl lg:text-7xl mt-4" style="font-size: clamp(2.25rem, 6vw, 4.5rem); margin-top: 1rem;">
+      {{ section.settings.heading_prefix | default: "First on every" }} <span class="serif-accent text-navy" style="color: var(--color-navy);">{{ section.settings.heading_accent | default: "drop." }}</span>
+    </h2>
+    <div class="mx-auto mt-10 max-w-md" style="margin-top: 2.5rem; margin-left: auto; margin-right: auto; max-width: 28rem;">
+      {% render 'newsletter-form' %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter Callout",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Join the list"
+    },
+    {
+      "type": "text",
+      "id": "heading_prefix",
+      "label": "Heading Prefix",
+      "default": "First on every"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Heading Accent",
+      "default": "drop."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter Callout"
+    }
+  ]
+}
+{% endschema %}

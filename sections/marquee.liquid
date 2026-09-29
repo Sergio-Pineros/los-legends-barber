@@ -1,0 +1,56 @@
+<section class="marquee-section border-y border-line bg-paper py-5 sm:py-7" style="border-top: 1px solid var(--color-line); border-bottom: 1px solid var(--color-line); background: var(--color-paper); padding-top: 1.5rem; padding-bottom: 1.5rem; overflow: hidden; user-select: none;">
+  <div class="flex whitespace-nowrap animate-marquee will-change-transform" style="display: flex; white-space: nowrap;">
+    {%- for i in (1..2) -%}
+      <div class="flex shrink-0 items-center" style="display: flex; flex-shrink: 0; align-items: center;" {% if forloop.last %}aria-hidden="true"{% endif %}>
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            <span class="display text-[11vw] sm:text-[7vw] leading-none px-6 sm:px-10 flex items-center gap-6 sm:gap-10" style="font-size: clamp(2rem, 7vw, 5.5rem); line-height: 1; padding: 0 2rem; display: inline-flex; align-items: center; gap: 2rem;">
+              {{ block.settings.text }}
+              <span class="rounded-full bg-navy inline-block" style="width: 10px; height: 10px; border-radius: 9999px; background: var(--color-navy); display: inline-block;"></span>
+            </span>
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign default_words = "Legends Worldwide,Made To Inspire,Cut Different,Est. 2022" | split: "," -%}
+          {%- for w in default_words -%}
+            <span class="display text-[11vw] sm:text-[7vw] leading-none px-6 sm:px-10 flex items-center gap-6 sm:gap-10" style="font-size: clamp(2rem, 7vw, 5.5rem); line-height: 1; padding: 0 2rem; display: inline-flex; align-items: center; gap: 2rem;">
+              {{ w }}
+              <span class="rounded-full bg-navy inline-block" style="width: 10px; height: 10px; border-radius: 9999px; background: var(--color-navy); display: inline-block;"></span>
+            </span>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Marquee Ticker",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Marquee item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Made To Inspire"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee Ticker",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Legends Worldwide" } },
+        { "type": "item", "settings": { "text": "Made To Inspire" } },
+        { "type": "item", "settings": { "text": "Cut Different" } },
+        { "type": "item", "settings": { "text": "Est. 2022" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

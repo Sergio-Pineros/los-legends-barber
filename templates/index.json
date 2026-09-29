@@ -1,0 +1,106 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "Los Angeles · Est. 2022 · Lifestyle Clothing",
+        "heading_line_1": "Made to",
+        "heading_line_2": "Inspire.",
+        "heading_accent": "cut different.",
+        "subheading": "Heavyweight essentials with a clean, minimal mark. Built for those who move with purpose — from the studio in LA to everywhere.",
+        "button_1_text": "Shop the collection",
+        "button_2_text": "Heavyweight Hoodie"
+      }
+    },
+    "marquee": {
+      "type": "marquee",
+      "blocks": {
+        "m1": { "type": "item", "settings": { "text": "Legends Worldwide" } },
+        "m2": { "type": "item", "settings": { "text": "Made To Inspire" } },
+        "m3": { "type": "item", "settings": { "text": "Cut Different" } },
+        "m4": { "type": "item", "settings": { "text": "Est. 2022" } }
+      },
+      "block_order": ["m1", "m2", "m3", "m4"],
+      "settings": {}
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "The latest",
+        "heading_prefix": "New",
+        "heading_accent": "arrivals",
+        "products_to_show": 4
+      }
+    },
+    "brand_statement": {
+      "type": "brand-statement",
+      "settings": {
+        "eyebrow": "The brand",
+        "heading_prefix": "Built for those who",
+        "heading_accent": "move with purpose.",
+        "text": "Legends Apparel is lifestyle clothing from Los Angeles. Heavyweight construction, relaxed cuts and a minimal LEGENDS mark — made to be worn every day, anywhere.",
+        "button_text": "Our story"
+      }
+    },
+    "color_story": {
+      "type": "color-story",
+      "settings": {
+        "eyebrow": "Heavyweight Hoodie",
+        "heading_prefix": "Seven",
+        "heading_accent": "colorways.",
+        "subheading": "Black, Blackish Green, Flower Gray, Blue, Apricot, Pink — and Camel. One hoodie, cut relaxed, in every mood."
+      }
+    },
+    "categories_list": {
+      "type": "categories-list",
+      "blocks": {
+        "c1": { "type": "category", "settings": { "title": "Hoodies", "count_text": "3 styles" } },
+        "c2": { "type": "category", "settings": { "title": "Tees", "count_text": "2 styles" } },
+        "c3": { "type": "category", "settings": { "title": "Bottoms", "count_text": "1 style" } }
+      },
+      "block_order": ["c1", "c2", "c3"],
+      "settings": {
+        "eyebrow": "Shop by",
+        "heading": "Category"
+      }
+    },
+    "editorial_split": {
+      "type": "editorial-split",
+      "settings": {
+        "eyebrow": "Legends Worldwide",
+        "heading_prefix": "Gloves",
+        "heading_accent": "up.",
+        "text": "The Legends Boxing Tee — Legends in blue up front, gloves on the back. Available in white and black.",
+        "button_text": "Shop the tee"
+      }
+    },
+    "all_products": {
+      "type": "all-products",
+      "settings": {
+        "eyebrow": "Everything",
+        "heading_prefix": "The full",
+        "heading_accent": "line.",
+        "products_to_show": 6
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Join the list",
+        "heading_prefix": "First on every",
+        "heading_accent": "drop."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "marquee",
+    "featured_collection",
+    "brand_statement",
+    "color_story",
+    "categories_list",
+    "editorial_split",
+    "all_products",
+    "newsletter"
+  ]
+}

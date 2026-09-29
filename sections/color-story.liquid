@@ -1,0 +1,111 @@
+{%- assign prod = section.settings.product -%}
+
+<section class="color-story-section bg-ink text-canvas py-20 lg:py-28 overflow-hidden" style="background-color: var(--color-ink); color: var(--color-canvas); padding-top: 5rem; padding-bottom: 5rem; overflow: hidden; margin-top: 6rem;">
+  <div class="page-container">
+    <div class="reveal flex flex-col lg:flex-row lg:items-end justify-between gap-6" style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <div>
+        <p class="eyebrow" style="color: rgba(247, 246, 243, 0.5);">{{ section.settings.eyebrow | default: "Heavyweight Hoodie" }}</p>
+        <h2 class="display text-5xl sm:text-6xl lg:text-7xl mt-3" style="font-size: clamp(2.5rem, 6vw, 4.5rem); margin-top: 0.75rem;">
+          {{ section.settings.heading_prefix | default: "Seven" }} <span class="serif-accent" style="color: rgba(247, 246, 243, 0.7);">{{ section.settings.heading_accent | default: "colorways." }}</span>
+        </h2>
+      </div>
+      <p class="text-sm max-w-sm" style="font-size: 0.875rem; color: rgba(247, 246, 243, 0.6); max-width: 24rem;">
+        {{ section.settings.subheading | default: "Black, Blackish Green, Flower Gray, Blue, Apricot, Pink — and Camel. One hoodie, cut relaxed, in every mood." }}
+      </p>
+    </div>
+  </div>
+
+  <div class="reveal mt-12" style="margin-top: 3rem; --reveal-delay: 120ms;">
+    <div class="colorways-scroll flex gap-4 sm:gap-6 overflow-x-auto no-scrollbar page-container snap-x snap-mandatory" style="display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem;">
+      {%- if prod != blank and prod.media.size > 0 -%}
+        {%- for media in prod.media -%}
+          {%- assign color_title = media.alt | default: prod.title -%}
+          <a href="{{ prod.url }}" class="colorway-card group relative shrink-0 snap-start" style="width: clamp(240px, 30vw, 360px); flex-shrink: 0; scroll-snap-align: start;">
+            <div class="relative aspect-[4/5] rounded-2xl overflow-hidden bg-white" style="position: relative; aspect-ratio: 4/5; border-radius: 1rem; overflow: hidden; background: #ffffff;">
+              {{ media | image_url: width: 700 | image_tag:
+                class: 'object-contain w-full h-full transition-transform duration-700 hover:scale-105',
+                loading: 'lazy',
+                alt: color_title | escape
+              }}
+            </div>
+            <div class="mt-4 flex items-center justify-between" style="margin-top: 1rem; display: flex; align-items: center; justify-content: space-between;">
+              <p class="text-sm font-medium" style="font-size: 0.875rem; font-weight: 500;">
+                <span class="tabular-nums mr-3" style="color: rgba(247, 246, 243, 0.4); margin-right: 0.75rem;">0{{ forloop.index }}</span>
+                {{ color_title }}
+              </p>
+              <span class="eyebrow text-[10px] transition-colors" style="font-size: 10px; color: rgba(247, 246, 243, 0.5);">Shop &rarr;</span>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment %} Fallback placeholder demo cards {% endcomment -%}
+        {%- assign fallback_colors = "Black,Blackish Green,Flower Gray,Blue,Apricot,Pink,Camel" | split: "," -%}
+        {%- for c in fallback_colors -%}
+          <div class="colorway-card group relative shrink-0 snap-start" style="width: clamp(240px, 30vw, 360px); flex-shrink: 0; scroll-snap-align: start;">
+            <div class="relative aspect-[4/5] rounded-2xl overflow-hidden bg-white flex items-center justify-center" style="position: relative; aspect-ratio: 4/5; border-radius: 1rem; overflow: hidden; background: #ffffff; display: flex; align-items: center; justify-content: center;">
+              {{ 'product-1' | placeholder_svg_tag: 'w-3/4 h-3/4 object-contain opacity-50' }}
+            </div>
+            <div class="mt-4 flex items-center justify-between" style="margin-top: 1rem; display: flex; align-items: center; justify-content: space-between;">
+              <p class="text-sm font-medium" style="font-size: 0.875rem; font-weight: 500;">
+                <span class="tabular-nums mr-3" style="color: rgba(247, 246, 243, 0.4); margin-right: 0.75rem;">0{{ forloop.index }}</span>
+                {{ c }}
+              </p>
+              <span class="eyebrow text-[10px]" style="font-size: 10px; color: rgba(247, 246, 243, 0.5);">Shop &rarr;</span>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (min-width: 1024px) {
+    .color-story-section .reveal.flex {
+      flex-direction: row !important;
+      align-items: flex-end !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Color Story",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Heavyweight Hoodie"
+    },
+    {
+      "type": "text",
+      "id": "heading_prefix",
+      "label": "Heading Prefix",
+      "default": "Seven"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Heading Accent",
+      "default": "colorways."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Black, Blackish Green, Flower Gray, Blue, Apricot, Pink — and Camel. One hoodie, cut relaxed, in every mood."
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Showcase Product (e.g. Heavyweight Hoodie)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Color Story"
+    }
+  ]
+}
+{% endschema %}

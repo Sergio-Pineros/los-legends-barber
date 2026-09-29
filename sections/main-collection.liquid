@@ -1,0 +1,134 @@
+{%- paginate collection.products by 16 -%}
+
+<div class="main-collection-section page-container pt-10 sm:pt-16" style="padding-top: 3.5rem;">
+  
+  <!-- BREADCRUMBS & HEADER -->
+  <div class="reveal">
+    <nav class="eyebrow text-[10px] text-mute flex items-center gap-2" aria-label="Breadcrumb" style="display: flex; align-items: center; gap: 0.5rem; font-size: 10px; color: var(--color-mute);">
+      <a href="{{ routes.root_url }}" class="hover:text-ink">Home</a>
+      <span>/</span>
+      <span class="text-ink" style="color: var(--color-ink);">{{ collection.title | default: "Shop" }}</span>
+    </nav>
+
+    <div class="mt-6 flex flex-col lg:flex-row lg:items-end justify-between gap-6" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+      <h1 class="display text-5xl sm:text-6xl lg:text-7xl" style="font-size: clamp(2.5rem, 6vw, 4.5rem);">
+        {{ collection.title | default: "All products" }}
+        <span class="serif-accent text-mute text-[0.45em] align-top ml-3" style="font-size: 0.45em; vertical-align: top; margin-left: 0.75rem; color: var(--color-mute);">
+          ({{ collection.all_products_count }})
+        </span>
+      </h1>
+      <p class="text-sm text-ink-soft max-w-sm" style="font-size: 0.875rem; color: var(--color-ink-soft); max-width: 24rem;">
+        {{ collection.description | default: "Heavyweight hoodies, tees and bottoms. Relaxed cuts, minimal LEGENDS mark, made to be worn every day." }}
+      </p>
+    </div>
+  </div>
+
+  <!-- STICKY FILTER & SORT BAR -->
+  <div class="sticky-filter-bar sticky top-16 lg:top-[72px] z-40 -mx-5 sm:-mx-8 lg:-mx-12 px-5 sm:px-8 lg:px-12 mt-10 py-3 bg-canvas/85 backdrop-blur-xl border-y border-line" style="position: sticky; top: var(--header-height); z-index: 40; margin-top: 2.5rem; padding-top: 0.75rem; padding-bottom: 0.75rem; background: rgba(247, 246, 243, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--color-line); border-bottom: 1px solid var(--color-line);">
+    <div class="flex items-center justify-between gap-4" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+      
+      <!-- CATEGORY PILLS -->
+      <div class="filter-pills flex gap-2 overflow-x-auto no-scrollbar" style="display: flex; gap: 0.5rem; overflow-x: auto;">
+        <a
+          href="{{ routes.all_products_collection_url }}"
+          class="eyebrow text-[10px] h-9 px-4 rounded-full border whitespace-nowrap grid place-items-center transition-colors {% if collection.handle == 'all' or collection.handle == blank %}bg-ink text-canvas border-ink{% else %}border-line-strong text-ink-soft hover:border-ink hover:text-ink{% endif %}"
+          style="display: grid; place-items: center; height: 36px; padding: 0 1rem; border-radius: 9999px; font-size: 10px; white-space: nowrap;"
+        >
+          All
+        </a>
+        {%- for coll in collections -%}
+          {%- unless coll.handle == 'all' or coll.handle == 'frontpage' -%}
+            <a
+              href="{{ coll.url }}"
+              class="eyebrow text-[10px] h-9 px-4 rounded-full border whitespace-nowrap grid place-items-center transition-colors {% if collection.handle == coll.handle %}bg-ink text-canvas border-ink{% else %}border-line-strong text-ink-soft hover:border-ink hover:text-ink{% endif %}"
+              style="display: grid; place-items: center; height: 36px; padding: 0 1rem; border-radius: 9999px; font-size: 10px; white-space: nowrap;"
+            >
+              {{ coll.title }}
+            </a>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+
+      <!-- SORT DROPDOWN -->
+      <div class="sort-dropdown-wrap relative shrink-0" style="position: relative; flex-shrink: 0;">
+        <select
+          id="SortBy"
+          name="sort_by"
+          aria-label="Sort collection by"
+          onchange="location.href = window.location.pathname + '?' + new URLSearchParams({ ...Object.fromEntries(new URLSearchParams(window.location.search)), sort_by: this.value }).toString()"
+          class="eyebrow text-[10px] h-9 px-4 rounded-full border border-line-strong bg-transparent cursor-pointer hover:border-ink outline-none pr-8 appearance-none"
+          style="height: 36px; padding: 0 2rem 0 1rem; border-radius: 9999px; border: 1px solid var(--color-line-strong); background: transparent; font-size: 10px; cursor: pointer; text-transform: uppercase;"
+        >
+          {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+          <option value="manual" {% if current_sort == 'manual' %}selected{% endif %}>Featured</option>
+          <option value="price-ascending" {% if current_sort == 'price-ascending' %}selected{% endif %}>Price: Low to High</option>
+          <option value="price-descending" {% if current_sort == 'price-descending' %}selected{% endif %}>Price: High to Low</option>
+          <option value="title-ascending" {% if current_sort == 'title-ascending' %}selected{% endif %}>A &ndash; Z</option>
+          <option value="created-descending" {% if current_sort == 'created-descending' %}selected{% endif %}>Newest</option>
+        </select>
+        <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-mute" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 8px;">
+          ▼
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS GRID -->
+  <div class="mt-12 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-12 sm:gap-x-6" style="margin-top: 3rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5rem; row-gap: 3rem;">
+    {%- for product in collection.products -%}
+      <div class="reveal" style="--reveal-delay: {{ forloop.index0 | modulo: 4 | times: 60 }}ms;">
+        {% render 'product-card', product: product, priority: forloop.first %}
+      </div>
+    {%- else -%}
+      <div class="col-span-full py-24 text-center">
+        <p class="serif-accent text-3xl text-ink-soft">No products found.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn-outline mt-6">View all products</a>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <!-- PAGINATION -->
+  {%- if paginate.pages > 1 -%}
+    <nav class="pagination-nav mt-16 flex justify-center gap-2" role="navigation" aria-label="Pagination" style="margin-top: 4rem; display: flex; justify-content: center; gap: 0.5rem;">
+      {%- if paginate.previous -%}
+        <a href="{{ paginate.previous.url }}" class="btn btn-outline h-10 px-4 text-[10px]">Previous</a>
+      {%- endif -%}
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}
+          <a href="{{ part.url }}" class="h-10 w-10 rounded-full border border-line grid place-items-center text-xs hover:border-ink">{{ part.title }}</a>
+        {%- else -%}
+          {%- if part.title == paginate.current_page -%}
+            <span class="h-10 w-10 rounded-full bg-ink text-canvas grid place-items-center text-xs font-semibold" aria-current="page">{{ part.title }}</span>
+          {%- else -%}
+            <span class="h-10 w-10 grid place-items-center text-xs text-mute">{{ part.title }}</span>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if paginate.next -%}
+        <a href="{{ paginate.next.url }}" class="btn btn-outline h-10 px-4 text-[10px]">Next</a>
+      {%- endif -%}
+    </nav>
+  {%- endif -%}
+
+</div>
+
+<style>
+  @media (min-width: 1024px) {
+    .main-collection-section .reveal.flex {
+      flex-direction: row !important;
+      align-items: flex-end !important;
+    }
+    .main-collection-section .mt-12.grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+  }
+</style>
+
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Main Collection",
+  "settings": []
+}
+{% endschema %}

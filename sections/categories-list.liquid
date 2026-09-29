@@ -1,0 +1,145 @@
+<section class="categories-section page-container pt-24 lg:pt-32" style="padding-top: 6rem;">
+  <div class="reveal mb-10" style="margin-bottom: 2.5rem;">
+    <p class="eyebrow text-mute" style="color: var(--color-mute);">{{ section.settings.eyebrow | default: "Shop by" }}</p>
+    <h2 class="display text-4xl sm:text-5xl lg:text-6xl mt-3" style="font-size: clamp(2.25rem, 5vw, 3.75rem); margin-top: 0.75rem;">
+      {{ section.settings.heading | default: "Category" }}
+    </h2>
+  </div>
+
+  <div class="categories-grid grid sm:grid-cols-3 gap-4 sm:gap-6" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        {%- assign coll = block.settings.collection -%}
+        <div class="reveal" style="--reveal-delay: {{ forloop.index0 | times: 90 }}ms;">
+          <a href="{{ coll.url | default: block.settings.link | default: routes.all_products_collection_url }}" class="category-card group relative block aspect-[4/5] rounded-[24px] overflow-hidden bg-paper border border-line" style="position: relative; display: block; aspect-ratio: 4/5; border-radius: 24px; overflow: hidden; background: var(--color-paper); border: 1px solid var(--color-line);">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 900 | image_tag:
+                class: 'object-contain w-full h-full transition-transform duration-700 group-hover:scale-105',
+                loading: 'lazy',
+                alt: block.settings.title | escape
+              }}
+            {%- elsif coll != blank and coll.featured_image != blank -%}
+              {{ coll.featured_image | image_url: width: 900 | image_tag:
+                class: 'object-contain w-full h-full transition-transform duration-700 group-hover:scale-105',
+                loading: 'lazy',
+                alt: coll.title | escape
+              }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'w-full h-full object-contain opacity-60' }}
+            {%- endif -%}
+
+            <div class="absolute inset-0" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(11,11,12,0.7), rgba(11,11,12,0.1) 60%, transparent);"></div>
+
+            <div class="category-card-info absolute inset-x-0 bottom-0 p-6 flex items-end justify-between text-canvas" style="position: absolute; inset-inline: 0; bottom: 0; padding: 1.5rem; display: flex; align-items: flex-end; justify-content: space-between; color: var(--color-canvas);">
+              <div>
+                <p class="eyebrow text-[10px]" style="font-size: 10px; color: rgba(247, 246, 243, 0.7);">
+                  {%- if coll != blank -%}
+                    {{ coll.all_products_count }} {{ coll.all_products_count | pluralize: 'style', 'styles' }}
+                  {%- else -%}
+                    {{ block.settings.count_text | default: "Featured" }}
+                  {%- endif -%}
+                </p>
+                <p class="display text-4xl mt-1" style="font-size: 2.25rem; margin-top: 0.25rem;">
+                  {{ block.settings.title | default: coll.title }}
+                </p>
+              </div>
+              <span class="category-arrow-btn h-11 w-11 rounded-full border border-canvas/50 grid place-items-center transition-all duration-500 group-hover:bg-canvas group-hover:text-ink" style="width: 44px; height: 44px; border-radius: 9999px; border: 1px solid rgba(247,246,243,0.5); display: grid; place-items: center;">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M2 8h11M9 3.5L13.5 8 9 12.5" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- assign demo_tiles = "Hoodies:3 styles,Tees:2 styles,Bottoms:1 style" | split: "," -%}
+      {%- for tile_str in demo_tiles -%}
+        {%- assign parts = tile_str | split: ":" -%}
+        {%- assign t_label = parts[0] -%}
+        {%- assign t_count = parts[1] -%}
+        <div class="reveal" style="--reveal-delay: {{ forloop.index0 | times: 90 }}ms;">
+          <a href="/collections/{{ t_label | downcase }}" class="category-card group relative block aspect-[4/5] rounded-[24px] overflow-hidden bg-paper border border-line" style="position: relative; display: block; aspect-ratio: 4/5; border-radius: 24px; overflow: hidden; background: var(--color-paper); border: 1px solid var(--color-line);">
+            <div class="absolute inset-0" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(11,11,12,0.7), rgba(11,11,12,0.1) 60%, transparent);"></div>
+            <div class="category-card-info absolute inset-x-0 bottom-0 p-6 flex items-end justify-between text-canvas" style="position: absolute; inset-inline: 0; bottom: 0; padding: 1.5rem; display: flex; align-items: flex-end; justify-content: space-between; color: var(--color-canvas);">
+              <div>
+                <p class="eyebrow text-[10px]" style="font-size: 10px; color: rgba(247, 246, 243, 0.7);">{{ t_count }}</p>
+                <p class="display text-4xl mt-1" style="font-size: 2.25rem; margin-top: 0.25rem;">{{ t_label }}</p>
+              </div>
+              <span class="category-arrow-btn h-11 w-11 rounded-full border border-canvas/50 grid place-items-center transition-all duration-500" style="width: 44px; height: 44px; border-radius: 9999px; border: 1px solid rgba(247,246,243,0.5); display: grid; place-items: center;">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M2 8h11M9 3.5L13.5 8 9 12.5" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Categories List",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop by"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Category"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category tile",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Hoodies"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom image"
+        },
+        {
+          "type": "text",
+          "id": "count_text",
+          "label": "Count text (if no collection assigned)",
+          "default": "3 styles"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Categories List",
+      "blocks": [
+        { "type": "category", "settings": { "title": "Hoodies" } },
+        { "type": "category", "settings": { "title": "Tees" } },
+        { "type": "category", "settings": { "title": "Bottoms" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

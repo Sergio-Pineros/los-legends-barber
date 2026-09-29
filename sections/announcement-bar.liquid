@@ -1,0 +1,62 @@
+{%- if section.settings.show_announcement -%}
+  <div class="announcement-bar bg-ink text-canvas overflow-hidden h-9 flex items-center" style="height: 36px; background-color: var(--color-ink); color: var(--color-canvas);">
+    <div class="flex whitespace-nowrap animate-marquee will-change-transform" style="display: flex; white-space: nowrap;">
+      {%- for i in (1..2) -%}
+        <div class="flex shrink-0 items-center" style="display: flex; flex-shrink: 0;" {% if forloop.last %}aria-hidden="true"{% endif %}>
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              <span class="eyebrow px-8 text-[10px] tracking-[0.28em] flex items-center gap-8" style="padding: 0 2rem; font-size: 10px; letter-spacing: 0.28em; display: inline-flex; align-items: center; gap: 2rem;">
+                {{ block.settings.text }}
+                <span class="h-1 w-1 rounded-full bg-canvas/60" style="display: inline-block; width: 4px; height: 4px; border-radius: 9999px; background: rgba(247, 246, 243, 0.6);"></span>
+              </span>
+            {%- endfor -%}
+          {%- else -%}
+            {%- assign default_items = "Made To Inspire,Lifestyle Clothing,Cut Different,Los Angeles · Est. 2022" | split: "," -%}
+            {%- for item in default_items -%}
+              <span class="eyebrow px-8 text-[10px] tracking-[0.28em] flex items-center gap-8" style="padding: 0 2rem; font-size: 10px; letter-spacing: 0.28em; display: inline-flex; align-items: center; gap: 2rem;">
+                {{ item }}
+                <span class="h-1 w-1 rounded-full bg-canvas/60" style="display: inline-block; width: 4px; height: 4px; border-radius: 9999px; background: rgba(247, 246, 243, 0.6);"></span>
+              </span>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement bar",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Made To Inspire"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "announcement", "settings": { "text": "Made To Inspire" } },
+      { "type": "announcement", "settings": { "text": "Lifestyle Clothing" } },
+      { "type": "announcement", "settings": { "text": "Cut Different" } },
+      { "type": "announcement", "settings": { "text": "Los Angeles · Est. 2022" } }
+    ]
+  }
+}
+{% endschema %}

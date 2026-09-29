@@ -1,0 +1,117 @@
+{% comment %}
+  Renders a product card for collection grids and featured blocks.
+  Accepts:
+  - product: {Object} Product Liquid object
+  - priority: {Boolean} If true, marks image loading as eager
+  - sizes: {String} CSS sizes attribute
+{% endcomment %}
+
+{%- liquid
+  assign primary_image = product.featured_media.preview_image
+  assign secondary_image = product.media[1].preview_image
+  assign has_secondary = false
+  if secondary_image != blank and secondary_image != primary_image
+    assign has_secondary = true
+  endif
+
+  assign is_new = false
+  if product.tags contains 'new' or product.tags contains 'featured' or product.created_at > 'now'
+    assign is_new = true
+  endif
+-%}
+
+<div class="product-card group block">
+  <div class="product-media relative aspect-[4/5] overflow-hidden rounded-2xl bg-paper border border-line">
+    <a href="{{ product.url }}" class="absolute inset-0 z-10" aria-label="{{ product.title | escape }}"></a>
+    
+    {%- if primary_image != blank -%}
+      {{ primary_image | image_url: width: 800 | image_tag:
+        class: 'img-primary object-contain object-center',
+        loading: priority ? 'eager' : 'lazy',
+        sizes: sizes | default: '(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw',
+        widths: '240, 360, 480, 600, 800',
+        alt: primary_image.alt | default: product.title | escape
+      }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'img-primary object-contain' }}
+    {%- endif -%}
+
+    {%- if has_secondary -%}
+      {{ secondary_image | image_url: width: 800 | image_tag:
+        class: 'img-hover object-contain object-center absolute inset-0',
+        loading: 'lazy',
+        sizes: sizes | default: '(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw',
+        widths: '240, 360, 480, 600, 800',
+        alt: secondary_image.alt | default: product.title | escape,
+        aria_hidden: 'true'
+      }}
+    {%- endif -%}
+
+    {%- if is_new -%}
+      <div class="product-card-badge eyebrow">New</div>
+    {%- endif -%}
+
+    <div class="product-card-btn-wrap pointer-events-none">
+      <span class="btn btn-light w-full h-11 text-[10px] shadow-lg pointer-events-auto">View product</span>
+    </div>
+  </div>
+
+  <div class="mt-4 flex items-start justify-between gap-4">
+    <div class="min-w-0 flex-1">
+      <h3 class="text-sm font-semibold tracking-tight leading-snug truncate">
+        <a href="{{ product.url }}" class="hover:underline">{{ product.title }}</a>
+      </h3>
+      
+      {%- assign tagline = product.metafields.custom.tagline | default: product.type -%}
+      {%- if tagline != blank -%}
+        <p class="mt-1 text-xs text-mute truncate">{{ tagline }}</p>
+      {%- endif -%}
+
+      {%- comment %} Color swatches if product has color option {% endcomment -%}
+      {%- assign color_option = product.options_by_name['Color'] -%}
+      {%- if color_option != blank and color_option.values.size > 0 -%}
+        <div class="mt-2.5 flex items-center gap-1.5 flex-wrap">
+          {%- for color_val in color_option.values -%}
+            {%- liquid
+              assign hex = '#ccc'
+              case color_val
+                when 'Black'
+                  assign hex = '#111111'
+                when 'White'
+                  assign hex = '#f4f4f4'
+                when 'Blackish Green'
+                  assign hex = '#1f2a24'
+                when 'Pink'
+                  assign hex = '#e7b6c4'
+                when 'Blue'
+                  assign hex = '#6f8fbf'
+                when 'Flower Gray'
+                  assign hex = '#b9b6ae'
+                when 'Apricot'
+                  assign hex = '#e9d3b8'
+                when 'Camel'
+                  assign hex = '#b48a5a'
+              endcase
+            -%}
+            <span
+              title="{{ color_val | escape }}"
+              class="swatch-dot"
+              style="background-color: {{ hex }};"
+            ></span>
+          {%- endfor -%}
+          {%- if color_option.values.size > 1 -%}
+            <span class="text-[10px] text-mute ml-1">{{ color_option.values.size }} colors</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <p class="text-sm font-medium tabular-nums shrink-0">
+      {%- if product.price_varies -%}
+        From {{ product.price_min | money }}
+      {%- else -%}
+        {{ product.price | money }}
+      {%- endif -%}
+    </p>
+  </div>
+</div>

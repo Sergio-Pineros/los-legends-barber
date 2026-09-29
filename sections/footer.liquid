@@ -1,0 +1,91 @@
+<footer class="site-footer bg-ink text-canvas mt-24" style="background-color: var(--color-ink); color: var(--color-canvas); margin-top: 6rem;">
+  <div class="page-container pt-20 pb-10" style="padding-top: 5rem; padding-bottom: 2.5rem;">
+    <div class="footer-grid grid gap-14 lg:grid-cols-12" style="display: grid; gap: 3.5rem;">
+      
+      <!-- NEWSLETTER -->
+      <div class="footer-newsletter lg:col-span-5">
+        <p class="eyebrow" style="color: rgba(247, 246, 243, 0.5);">Newsletter</p>
+        <h3 class="display text-4xl sm:text-5xl mt-4" style="font-size: 2.5rem; margin-top: 1rem;">
+          Stay <span class="serif-accent" style="color: rgba(247, 246, 243, 0.8);">legendary.</span>
+        </h3>
+        <p class="mt-4 text-sm max-w-sm" style="margin-top: 1rem; font-size: 0.875rem; color: rgba(247, 246, 243, 0.6); max-width: 24rem;">
+          Drops, restocks and stories from the studio. No noise.
+        </p>
+        <div class="mt-8 max-w-md" style="margin-top: 2rem; max-width: 28rem;">
+          {% render 'newsletter-form', dark: true %}
+        </div>
+      </div>
+
+      <!-- LINK COLUMNS -->
+      <div class="footer-links lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-10 lg:pl-20" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 2.5rem;">
+        <div>
+          <p class="eyebrow mb-5" style="color: rgba(247, 246, 243, 0.5); margin-bottom: 1.25rem;">Shop</p>
+          <ul class="space-y-3 text-sm" style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem;">
+            <li><a href="{{ routes.all_products_collection_url }}" class="link-line" style="color: rgba(247, 246, 243, 0.8);">All products</a></li>
+            <li><a href="/collections/hoodies" class="link-line" style="color: rgba(247, 246, 243, 0.8);">Hoodies</a></li>
+            <li><a href="/collections/tees" class="link-line" style="color: rgba(247, 246, 243, 0.8);">Tees</a></li>
+            <li><a href="/collections/bottoms" class="link-line" style="color: rgba(247, 246, 243, 0.8);">Bottoms</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="eyebrow mb-5" style="color: rgba(247, 246, 243, 0.5); margin-bottom: 1.25rem;">Brand</p>
+          <ul class="space-y-3 text-sm" style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem;">
+            <li><a href="/pages/about" class="link-line" style="color: rgba(247, 246, 243, 0.8);">About</a></li>
+            <li><a href="{{ routes.cart_url }}" class="link-line" style="color: rgba(247, 246, 243, 0.8);">Your bag</a></li>
+            <li><a href="/pages/about#sizing" class="link-line" style="color: rgba(247, 246, 243, 0.8);">Sizing &amp; fit</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="eyebrow mb-5" style="color: rgba(247, 246, 243, 0.5); margin-bottom: 1.25rem;">Studio</p>
+          <ul class="space-y-3 text-sm" style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem; color: rgba(247, 246, 243, 0.8);">
+            <li>Los Angeles, CA</li>
+            <li>Est. 2022</li>
+            <li>Legends Worldwide</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- WATERMARK LOGO -->
+    <div class="footer-watermark mt-20 overflow-hidden select-none" aria-hidden="true" style="margin-top: 5rem; overflow: hidden; user-select: none;">
+      <p class="display text-center tracking-[-0.06em]" style="font-size: 18vw; line-height: 0.8; margin-bottom: -3vw; color: rgba(247, 246, 243, 0.08);">
+        Legends
+      </p>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="footer-bottom mt-8 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] uppercase tracking-[0.18em]" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(247, 246, 243, 0.15); display: flex; flex-wrap: wrap; justify-content: space-between; font-size: 11px; letter-spacing: 0.18em; color: rgba(247, 246, 243, 0.5);">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+      <p>Made To Inspire &middot; Cut Different</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  @media (min-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    }
+    .footer-newsletter {
+      grid-column: span 5 / span 5 !important;
+    }
+    .footer-links {
+      grid-column: span 7 / span 7 !important;
+      padding-left: 5rem !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "Legends Apparel"
+    }
+  ]
+}
+{% endschema %}

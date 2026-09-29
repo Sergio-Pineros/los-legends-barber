@@ -1,0 +1,60 @@
+{
+  "current": {
+    "color_canvas": "#f7f6f3",
+    "color_paper": "#ffffff",
+    "color_ink": "#0b0b0c",
+    "color_navy": "#1c2a5b",
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "show_announcement": true
+        },
+        "blocks": {
+          "announcement-1": {
+            "type": "announcement",
+            "settings": {
+              "text": "Made To Inspire"
+            }
+          },
+          "announcement-2": {
+            "type": "announcement",
+            "settings": {
+              "text": "Lifestyle Clothing"
+            }
+          },
+          "announcement-3": {
+            "type": "announcement",
+            "settings": {
+              "text": "Cut Different"
+            }
+          },
+          "announcement-4": {
+            "type": "announcement",
+            "settings": {
+              "text": "Los Angeles · Est. 2022"
+            }
+          }
+        },
+        "block_order": [
+          "announcement-1",
+          "announcement-2",
+          "announcement-3",
+          "announcement-4"
+        ]
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "menu": "main-menu"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "copyright_text": "Legends Apparel"
+        }
+      }
+    }
+  }
+}

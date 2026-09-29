@@ -1,0 +1,119 @@
+{%- assign prod = section.settings.product -%}
+
+<section class="editorial-split-section page-container pt-24 lg:pt-32" style="padding-top: 6rem;">
+  <div class="split-grid grid lg:grid-cols-2 gap-4 sm:gap-6" style="display: grid; gap: 1.5rem;">
+    
+    <!-- LEFT IMAGE -->
+    <div class="reveal relative rounded-[28px] overflow-hidden bg-paper border border-line aspect-square lg:aspect-auto lg:min-h-[640px]" style="position: relative; border-radius: 28px; overflow: hidden; background: var(--color-paper); border: 1px solid var(--color-line); min-height: 480px;">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1200 | image_tag:
+          class: 'object-contain w-full h-full',
+          loading: 'lazy',
+          alt: section.settings.heading_prefix | escape
+        }}
+      {%- elsif prod != blank and prod.featured_media != blank -%}
+        {{ prod.featured_media | image_url: width: 1200 | image_tag:
+          class: 'object-contain w-full h-full',
+          loading: 'lazy',
+          alt: prod.title | escape
+        }}
+      {%- else -%}
+        {{ 'hero.jpg' | asset_url | image_tag:
+          class: 'object-cover w-full h-full',
+          loading: 'lazy',
+          alt: 'Legends Boxing Tee'
+        }}
+      {%- endif -%}
+    </div>
+
+    <!-- RIGHT NAVY CARD -->
+    <div class="reveal rounded-[28px] bg-navy text-canvas p-8 sm:p-12 lg:p-16 flex flex-col justify-between min-h-[480px]" style="background-color: var(--color-navy); color: var(--color-canvas); border-radius: 28px; padding: clamp(2rem, 5vw, 4rem); display: flex; flex-direction: column; justify-content: space-between; min-height: 480px; --reveal-delay: 100ms;">
+      <p class="eyebrow" style="color: rgba(247, 246, 243, 0.6);">{{ section.settings.eyebrow | default: "Legends Worldwide" }}</p>
+      
+      <div style="margin-top: auto; padding-top: 3rem;">
+        <h2 class="display text-5xl sm:text-6xl lg:text-7xl leading-[0.9]" style="font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 0.9;">
+          {{ section.settings.heading_prefix | default: "Gloves" }} <span class="serif-accent" style="color: rgba(247, 246, 243, 0.8);">{{ section.settings.heading_accent | default: "up." }}</span>
+        </h2>
+        <p class="mt-6 text-[15px] leading-relaxed max-w-sm" style="margin-top: 1.5rem; font-size: 15px; line-height: 1.6; color: rgba(247, 246, 243, 0.75); max-width: 24rem;">
+          {{ section.settings.text | default: "The Legends Boxing Tee — Legends in blue up front, gloves on the back. Available in white and black." }}
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3" style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem;">
+          <a href="{{ prod.url | default: section.settings.button_link | default: routes.all_products_collection_url }}" class="btn btn-light">
+            {{ section.settings.button_text | default: "Shop the tee" }}
+            {%- if prod != blank -%}
+              &middot; {{ prod.price | money }}
+            {%- else -%}
+              &middot; $35.00
+            {%- endif -%}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (min-width: 1024px) {
+    .split-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Editorial Split",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Legends Worldwide"
+    },
+    {
+      "type": "text",
+      "id": "heading_prefix",
+      "label": "Heading Prefix",
+      "default": "Gloves"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Heading Accent",
+      "default": "up."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "The Legends Boxing Tee — Legends in blue up front, gloves on the back. Available in white and black."
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Featured Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Custom Image (optional)"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop the tee"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Split"
+    }
+  ]
+}
+{% endschema %}
