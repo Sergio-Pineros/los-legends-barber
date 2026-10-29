@@ -27,7 +27,7 @@ export function CartDrawer() {
             type="button"
             onClick={close}
             aria-label="Close bag"
-            className="h-10 w-10 grid place-items-center rounded-full border border-line hover:bg-ink hover:text-white hover:border-ink transition-colors"
+            className="h-10 w-10 grid place-items-center rounded-full border border-line hover:bg-ink hover:text-canvas hover:border-ink transition-colors"
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6">
               <path d="M1 1l12 12M13 1L1 13" />
@@ -38,7 +38,7 @@ export function CartDrawer() {
         {cart.items.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center text-center px-8 gap-6">
             <p className="serif-accent text-3xl text-ink-soft">Your bag is empty.</p>
-            <Link href="/shop" onClick={close} className="btn btn-primary">
+            <Link href="/apparel" onClick={close} className="btn btn-primary">
               Shop the collection
             </Link>
           </div>

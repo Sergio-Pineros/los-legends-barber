@@ -12,10 +12,10 @@ export function CartPageContent() {
     <>
       <div className="flex items-end justify-between gap-6">
         <h1 className="display text-5xl sm:text-6xl lg:text-7xl">
-          Your <span className="serif-accent text-navy">bag</span>
+          Your <span className="serif-accent text-gold">bag</span>
           <span className="serif-accent text-mute text-[0.45em] align-top ml-3">({cart.count})</span>
         </h1>
-        <Link href="/shop" className="eyebrow text-[11px] link-line pb-1 shrink-0">Continue shopping</Link>
+        <Link href="/apparel" className="eyebrow text-[11px] link-line pb-1 shrink-0">Continue shopping</Link>
       </div>
 
       {loading ? (
@@ -24,7 +24,7 @@ export function CartPageContent() {
         <div className="py-28 text-center">
           <p className="serif-accent text-3xl sm:text-4xl text-ink-soft">Your bag is empty.</p>
           <p className="mt-3 text-sm text-mute">Start with the heavyweight hoodie.</p>
-          <Link href="/shop" className="btn btn-primary mt-8">Shop the collection</Link>
+          <Link href="/apparel" className="btn btn-primary mt-8">Shop the collection</Link>
         </div>
       ) : (
         <div className="mt-12 grid lg:grid-cols-12 gap-10 lg:gap-16">

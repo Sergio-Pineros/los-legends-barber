@@ -15,7 +15,7 @@ export function CartLineItem({ line, compact = false }: { line: CartLine; compac
       <Link
         href={`/products/${line.productHandle}`}
         onClick={close}
-        className={`${imgSize} shrink-0 overflow-hidden rounded-xl bg-paper border border-line`}
+        className={`${imgSize} shrink-0 overflow-hidden rounded-xl bg-product border border-line`}
       >
         <div className="relative aspect-square">
           {line.image && (
@@ -46,7 +46,7 @@ export function CartLineItem({ line, compact = false }: { line: CartLine; compac
               aria-label="Decrease quantity"
               disabled={pending}
               onClick={() => update(line.id, line.quantity - 1)}
-              className="h-9 w-9 grid place-items-center text-lg leading-none hover:bg-ink hover:text-white rounded-full transition-colors disabled:opacity-40"
+              className="h-9 w-9 grid place-items-center text-lg leading-none hover:bg-ink hover:text-canvas rounded-full transition-colors disabled:opacity-40"
             >
               −
             </button>
@@ -56,7 +56,7 @@ export function CartLineItem({ line, compact = false }: { line: CartLine; compac
               aria-label="Increase quantity"
               disabled={pending || line.quantity >= 10}
               onClick={() => update(line.id, line.quantity + 1)}
-              className="h-9 w-9 grid place-items-center text-lg leading-none hover:bg-ink hover:text-white rounded-full transition-colors disabled:opacity-40"
+              className="h-9 w-9 grid place-items-center text-lg leading-none hover:bg-ink hover:text-canvas rounded-full transition-colors disabled:opacity-40"
             >
               +
             </button>

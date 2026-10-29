@@ -7,7 +7,7 @@ import { Reveal } from "@/components/reveal";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = { title: "Shop" };
+export const metadata: Metadata = { title: "Apparel" };
 
 type Search = { category?: string; sort?: string };
 
@@ -18,7 +18,7 @@ const SORTS = [
   { value: "az", label: "A – Z" },
 ];
 
-export default async function ShopPage({ searchParams }: { searchParams: Promise<Search> }) {
+export default async function ApparelPage({ searchParams }: { searchParams: Promise<Search> }) {
   const { category, sort = "featured" } = await searchParams;
   const activeCategory = CATEGORIES.find((c) => c.slug === category)?.slug;
   const products = await getAllProducts(activeCategory);
@@ -36,7 +36,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
     }
   });
 
-  const heading = activeCategory ? CATEGORIES.find((c) => c.slug === activeCategory)!.label : "All products";
+  const heading = activeCategory ? CATEGORIES.find((c) => c.slug === activeCategory)!.label : "Apparel";
   const buildHref = (next: Partial<Search>) => {
     const params = new URLSearchParams();
     const cat = next.category === undefined ? activeCategory : next.category;
@@ -44,7 +44,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
     if (cat) params.set("category", cat);
     if (s && s !== "featured") params.set("sort", s);
     const q = params.toString();
-    return q ? `/shop?${q}` : "/shop";
+    return q ? `/apparel?${q}` : "/apparel";
   };
 
   return (
@@ -53,7 +53,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
         <nav className="eyebrow text-[10px] text-mute flex items-center gap-2" aria-label="Breadcrumb">
           <Link href="/" className="hover:text-ink">Home</Link>
           <span>/</span>
-          <span className="text-ink">Shop</span>
+          <span className="text-ink">Apparel</span>
         </nav>
         <div className="mt-6 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <h1 className="display text-5xl sm:text-6xl lg:text-7xl">
@@ -61,7 +61,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
             <span className="serif-accent text-mute text-[0.45em] align-top ml-3">({sorted.length})</span>
           </h1>
           <p className="text-sm text-ink-soft max-w-sm">
-            Heavyweight hoodies, tees and bottoms. Relaxed cuts, minimal LEGENDS mark, made to be worn every day.
+            Heavyweight hoodies, tees and bottoms from the Legends line. Made to inspire. Cut different.
           </p>
         </div>
       </Reveal>
@@ -107,7 +107,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
       {sorted.length === 0 ? (
         <div className="py-32 text-center">
           <p className="serif-accent text-3xl text-mute">Nothing here yet.</p>
-          <Link href="/shop" className="btn btn-outline mt-8">View all products</Link>
+          <Link href="/apparel" className="btn btn-outline mt-8">View all products</Link>
         </div>
       ) : (
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10 sm:gap-x-6 pt-10">

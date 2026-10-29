@@ -35,14 +35,14 @@ export default async function ProductPage({
   const product = await getProductByHandle(handle);
   if (!product) notFound();
   const related = await getRelatedProducts(product, 4);
-  const categoryLabel = CATEGORIES.find((c) => c.slug === product.category)?.label ?? "Shop";
+  const categoryLabel = CATEGORIES.find((c) => c.slug === product.category)?.label ?? "Apparel";
 
   return (
     <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 pt-8 sm:pt-12">
       <nav className="eyebrow text-[10px] text-mute flex items-center gap-2 mb-8" aria-label="Breadcrumb">
         <Link href="/" className="hover:text-ink">Home</Link>
         <span>/</span>
-        <Link href={`/shop?category=${product.category}`} className="hover:text-ink">{categoryLabel}</Link>
+        <Link href={`/apparel?category=${product.category}`} className="hover:text-ink">{categoryLabel}</Link>
         <span>/</span>
         <span className="text-ink truncate">{product.title}</span>
       </nav>
@@ -55,10 +55,10 @@ export default async function ProductPage({
             <div>
               <p className="eyebrow text-mute">Complete the look</p>
               <h2 className="display text-4xl sm:text-5xl mt-3">
-                You may <span className="serif-accent text-navy">also like</span>
+                You may <span className="serif-accent text-gold">also like</span>
               </h2>
             </div>
-            <Link href="/shop" className="eyebrow text-[11px] link-line pb-1 shrink-0">Shop all</Link>
+            <Link href="/apparel" className="eyebrow text-[11px] link-line pb-1 shrink-0">All apparel</Link>
           </Reveal>
           <div className="grid grid-cols-2 xl:grid-cols-4 gap-x-4 gap-y-10 sm:gap-x-6">
             {related.map((p, i) => (

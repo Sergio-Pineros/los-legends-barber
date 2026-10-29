@@ -24,8 +24,6 @@ export function ProductView({ product, initialColor }: { product: ProductWithMed
     return forColor.length ? forColor : product.images;
   }, [product.images, color]);
 
-  useEffect(() => setActiveIdx(0), [color]);
-
   const sizes = useMemo(
     () => [...product.sizes].sort((a, b) => SIZE_ORDER.indexOf(a) - SIZE_ORDER.indexOf(b)),
     [product.sizes],
@@ -62,7 +60,7 @@ export function ProductView({ product, initialColor }: { product: ProductWithMed
                   type="button"
                   onClick={() => setActiveIdx(i)}
                   aria-label={`View image ${i + 1}`}
-                  className={`relative w-20 aspect-[4/5] shrink-0 rounded-xl overflow-hidden border transition-colors bg-paper ${
+                  className={`relative w-20 aspect-[4/5] shrink-0 rounded-xl overflow-hidden border transition-colors bg-product ${
                     i === activeIdx ? "border-ink" : "border-line hover:border-line-strong"
                   }`}
                 >
@@ -71,7 +69,7 @@ export function ProductView({ product, initialColor }: { product: ProductWithMed
               ))}
             </div>
           )}
-          <div className="relative flex-1 aspect-[4/5] rounded-[24px] overflow-hidden bg-paper border border-line">
+          <div className="relative flex-1 aspect-[4/5] rounded-[24px] overflow-hidden bg-product border border-line">
             {gallery.map((img, i) => (
               <Image
                 key={img.id}
@@ -86,7 +84,7 @@ export function ProductView({ product, initialColor }: { product: ProductWithMed
             {gallery.length > 1 && (
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
                 {gallery.map((_, i) => (
-                  <span key={i} className={`h-1.5 rounded-full transition-all ${i === activeIdx ? "w-6 bg-ink" : "w-1.5 bg-ink/25"}`} />
+                  <span key={i} className={`h-1.5 rounded-full transition-all ${i === activeIdx ? "w-6 bg-black" : "w-1.5 bg-black/25"}`} />
                 ))}
               </div>
             )}
@@ -115,7 +113,10 @@ export function ProductView({ product, initialColor }: { product: ProductWithMed
               <button
                 key={c}
                 type="button"
-                onClick={() => setColor(c)}
+                onClick={() => {
+                  setColor(c);
+                  setActiveIdx(0);
+                }}
                 aria-label={c}
                 aria-pressed={c === color}
                 title={c}
@@ -123,7 +124,7 @@ export function ProductView({ product, initialColor }: { product: ProductWithMed
                   c === color ? "border-ink scale-105" : "border-line-strong hover:border-ink"
                 }`}
               >
-                <span className="h-6 w-6 rounded-full border border-black/10" style={{ background: SWATCH[c] ?? "#ccc" }} />
+                <span className="h-6 w-6 rounded-full border border-white/20" style={{ background: SWATCH[c] ?? "#ccc" }} />
               </button>
             ))}
           </div>
@@ -224,7 +225,7 @@ export function ProductView({ product, initialColor }: { product: ProductWithMed
                   <ul className="space-y-2">
                     {product.features.map((f) => (
                       <li key={f} className="flex gap-3">
-                        <span className="mt-2 h-1 w-1 rounded-full bg-navy shrink-0" />
+                        <span className="mt-2 h-1 w-1 rounded-full bg-gold shrink-0" />
                         {f}
                       </li>
                     ))}

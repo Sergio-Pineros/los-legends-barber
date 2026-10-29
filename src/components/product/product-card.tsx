@@ -26,7 +26,7 @@ export function ProductCard({
   const [primary, secondary] = product.images;
   return (
     <Link href={`/products/${product.handle}`} className="group block">
-      <div className="product-media relative aspect-[4/5] overflow-hidden rounded-2xl bg-paper border border-line">
+      <div className="product-media relative aspect-[4/5] overflow-hidden rounded-2xl bg-product border border-line">
         {primary && (
           <Image
             src={primary.src}
@@ -49,11 +49,11 @@ export function ProductCard({
         )}
         <div className="absolute left-4 top-4 flex gap-2">
           {product.featured && (
-            <span className="eyebrow text-[9px] px-2.5 py-1.5 rounded-full bg-ink text-canvas">New</span>
+            <span className="eyebrow text-[9px] px-2.5 py-1.5 rounded-full bg-black text-white">New</span>
           )}
         </div>
         <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 group-hover:opacity-100">
-          <span className="btn btn-light w-full h-11 text-[10px] shadow-lg">View product</span>
+          <span className="btn w-full h-11 text-[10px] shadow-lg bg-black text-white border border-black">View product</span>
         </div>
       </div>
       <div className="mt-4 flex items-start justify-between gap-4">
@@ -66,7 +66,7 @@ export function ProductCard({
                 <span
                   key={c}
                   title={c}
-                  className="h-3 w-3 rounded-full border border-black/10"
+                  className="h-3 w-3 rounded-full border border-white/20"
                   style={{ background: SWATCH[c] ?? "#ccc" }}
                 />
               ))}
